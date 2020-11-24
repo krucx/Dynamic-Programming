@@ -28,26 +28,23 @@ def print_intervals(parent,max_profit):
     f = f - intervals[parent[f]][2]
   return ' '.join(s)        
 
-def DP(dp,parent,finish_time):
-
-    index = after_finish_time(finish_time)
-
-    if index>=len(intervals):
+def DP(dp,parent,i):
+    
+    if i>=len(intervals):
         return 0
 
-    if dp[index]!=-1:
-        return dp[index]
+    if dp[i]!=-1:
+        return dp[i]
 
-    dp[index] = 0
-    j = index
-    for i in range(index,len(intervals)):
-        x = DP(dp,parent,intervals[i][1]) + intervals[i][2]
-        if x>dp[index]:
-            dp[index] = x
-            j = i
-    
-    parent[dp[index]] = j
-    return dp[index]
+    index = after_finish_time(intervals[i][1])
+    x = DP(dp,parent,index) + intervals[i][2]
+    y = DP(dp,parent,i+1)
+    if x>y:
+        dp[i] = x
+        parent[dp[i]] = i 
+    else:
+        dp[i] = y
+    return dp[i]
 
 intervals = take_input()
 
